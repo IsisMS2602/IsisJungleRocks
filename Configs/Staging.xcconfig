@@ -1,0 +1,19 @@
+//
+//  staging.xcconfig
+//  IsisJungleRocks
+//
+//  Created by Ígor Yamamoto on 14/03/19.
+//  Copyright © 2019 Jungle Devs. All rights reserved.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+#include "base.xcconfig"
+
+BUNDLE_DISPLAY_NAME = IsisJungleRocks Staging
+ASSETCATALOG_COMPILER_APPICON_NAME = AppIconStaging
+PRODUCT_BUNDLE_IDENTIFIER = com.jungledevs.IsisJungleRocks.staging
+
+SLASH = / // Workaround to solve double slash problem (can't scape character)
+BASE_URL = http:$(SLASH)/api-staging.IsisJungleRocks.com
