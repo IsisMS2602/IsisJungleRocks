@@ -11,36 +11,29 @@ import Alamofire
 
 protocol APIRequestable {
     associatedtype APIResponse: Decodable
-
     var dateDecodingStrategy: JSONDecoder.DateDecodingStrategy { get }
     var headers: HTTPHeaders? { get }
     var method: HTTPMethod { get }
     var parameters: Parameters? { get set }
     var url: String { get set }
-
     func convertResponse(from data: Decodable) -> APIResponse?
     func request(completion: @escaping (APIResult<APIResponse>) -> Void) -> APIRequest?
 }
-
 extension APIRequestable {
     public var dateDecodingStrategy: JSONDecoder.DateDecodingStrategy {
         return JSONDecoder.DateDecodingStrategy.iso
     }
-
     public var headers: HTTPHeaders? {
         guard let token = SessionHelper.shared.authToken else { return HTTPHeaders() }
         return [ "Authorization": "Token \(token)" ]
     }
-
     static public var isInternetAvailable: Bool {
         return NetworkReachabilityManager()?.isReachable ?? false
     }
-
     func convertResponse(from data: Decodable) -> APIResponse? {
         return data as? APIResponse
     }
 }
-
 extension APIRequestable {
     @discardableResult
     func request(completion: @escaping (APIResult<APIResponse>) -> Void) -> APIRequest? {
@@ -48,9 +41,7 @@ extension APIRequestable {
             completion(.failure(.internetConnection))
             return nil
         }
-
         let encoding: ParameterEncoding = method == .get ? URLEncoding.default : JSONEncoding.default
-
         return Alamofire.request(
             url,
             method: method,
@@ -62,25 +53,21 @@ extension APIRequestable {
                     completion(.failure(.cancelled(response)))
                     return
                 }
-
                 guard let statusCode = response.response?.statusCode else {
                     log("[REQUEST ERROR] Could not get status code")
                     completion(.failure(.noStatusCode(response)))
                     return
                 }
-
                 guard 200...299 ~= statusCode else {
                     log("[REQUEST ERROR] Status code out of 200...299")
                     completion(.failure(.statusCode(statusCode)))
                     return
                 }
-
                 guard let data = response.data else {
                     log("[REQUEST ERROR] Could not get data")
                     completion(.failure(.noData(response)))
                     return
                 }
-
                 do {
                     let responseAsObject = try APIResponse.decoded(
                         from: data,

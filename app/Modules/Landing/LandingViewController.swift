@@ -18,6 +18,7 @@ class LandingViewController: BaseViewController, StoryboardLoadable {
     override func viewDidLoad() {
         super.viewDidLoad()
         inicialButtonState()
+        warningLabelHidden()
         emailTextField.delegate = self
         passwordTextField.delegate = self
     }
@@ -28,6 +29,8 @@ class LandingViewController: BaseViewController, StoryboardLoadable {
     @IBOutlet weak var joinInButton: UIButton!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var emailNotValidLabel: UILabel!
+    @IBOutlet weak var passwordNotValidLabel: UILabel!
     @IBAction func joinButton(_ sender: Any) {
         loginGetRequest()
     }
@@ -35,12 +38,33 @@ class LandingViewController: BaseViewController, StoryboardLoadable {
         if isEmailValid(email: email) && isPasswordValid(password: password) == true {
             joinInButton.isEnabled = true
             joinInButton.backgroundColor = UIColor(red: 22/255, green: 155/255, blue: 58/255, alpha: 1)
-            print("Is  validated")
-        } else {
-            joinInButton.isEnabled = false
-            joinInButton.backgroundColor = UIColor(red: 22/255, green: 155/255, blue: 58/255, alpha: 0.5)
-            print("not valid")
+            warningLabelHidden()
         }
+        if (isEmailValid(email: email) == true) && (isPasswordValid(password: password) == false) {
+            inicialButtonState()
+            emailNotValidLabel.isHidden = true
+            passwordNotValidLabel.isHidden = false
+        }
+        if (isEmailValid(email: email) == false) && (isPasswordValid(password: password) == true) {
+            inicialButtonState()
+            emailNotValidLabel.isHidden = false
+            passwordNotValidLabel.isHidden = true
+        }
+        if (isEmailValid(email: email) == false) && (isPasswordValid(password: password) == false) {
+            inicialButtonState()
+            emailNotValidLabel.isHidden = false
+            passwordNotValidLabel.isHidden = false
+        }
+        if email == "" {
+            emailNotValidLabel.isHidden = true
+        }
+        if password == "" {
+            passwordNotValidLabel.isHidden = true
+        }
+    }
+    func warningLabelHidden() {
+        emailNotValidLabel.isHidden = true
+        passwordNotValidLabel.isHidden = true
     }
     func inicialButtonState() {
         joinInButton.layer.cornerRadius = 20
@@ -48,7 +72,7 @@ class LandingViewController: BaseViewController, StoryboardLoadable {
         joinInButton.backgroundColor = UIColor(red: 22/255, green: 155/255, blue: 58/255, alpha: 0.5)
     }
     func loginGetRequest() {
-        APIManager.GetUser.init(email: email, password: password).request() {
+        APIManager.GetUser.init(email: email, password: password).request {
             response in
             switch response {
             case .success(let userResponse) :
