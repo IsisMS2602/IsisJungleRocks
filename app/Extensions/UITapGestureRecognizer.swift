@@ -36,6 +36,8 @@ extension UITapGestureRecognizer {
         case .left, .natural, .justified: horizontalFlushFactor = 0.0
         case .center: horizontalFlushFactor = 0.5
         case .right: horizontalFlushFactor = 1.0
+        @unknown default:
+            fatalError("Erro")
         }
 
         let textContainerOffset = CGPoint(

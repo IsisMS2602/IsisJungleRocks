@@ -11,6 +11,5 @@ import Foundation
 struct User: Codable {
     let id: Int
     let email: String
-    let firstName: String
-    let lastName: String
+    let password: String
 }
