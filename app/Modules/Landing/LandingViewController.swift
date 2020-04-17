@@ -21,7 +21,13 @@ class LandingViewController: BaseViewController, StoryboardLoadable {
         warningLabelHidden()
         emailTextField.delegate = self
         passwordTextField.delegate = self
+        navigationController?.isNavigationBarHidden = true
+        navigationController?.isToolbarHidden = true
     }
+    override func viewWillAppear(_ animated: Bool) {
+          navigationController?.setNavigationBarHidden(true, animated: false)
+          navigationController?.setToolbarHidden(true, animated: false)
+      }
     // MARK: Variables
     var email: String = ""
     var password: String = ""
@@ -72,19 +78,19 @@ class LandingViewController: BaseViewController, StoryboardLoadable {
         joinInButton.backgroundColor = UIColor(red: 22/255, green: 155/255, blue: 58/255, alpha: 0.5)
     }
     func loginGetRequest() {
-        APIManager.GetUser.init(email: email, password: password).request {
+        APIManager.Login.init(email: email, password: password).request {
             response in
             switch response {
             case .success(let userResponse) :
-                if userResponse.count == 0 {
-                    let alert = UIAlertController(title: "User not found", message: "Enter with another email acount", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Dismiss", style: .destructive))
-                    self.present(alert, animated: true)
-                } else {
+                    print("sucesso")
+                    SessionHelper.shared.createSession(user: userResponse.user, token: userResponse.key)
                     self.navigationController?.pushViewController(CoreViewController.initModule(), animated: true)
-                    SessionHelper.shared.createSession(user: userResponse[0], token: "1234")
-                }
+                    let viewController = CoreViewController.initModule()
+                    viewController.userImage = userResponse.user.picture ?? " "
             case .failure:
+                let alert = UIAlertController(title: "Unable to log in", message: "Check your conection status", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Dismiss", style: .destructive))
+                self.present(alert, animated: true)
                 print("erro")
             }
         }

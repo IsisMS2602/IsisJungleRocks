@@ -10,15 +10,17 @@ import Foundation
 import Alamofire
 
 class APIManager {
-    static let URL = "http://api-staging.jungle.rocks/api/v1/login"
-    struct GetUser: APIRequestable {
-        typealias APIResponse = [User]
+    struct Login: APIRequestable {
+        typealias APIResponse = UserResponse
         var headers: HTTPHeaders?
-        var method: HTTPMethod = .get
+        var method: HTTPMethod = .post
         var parameters: Parameters?
-        var url: String
+        var url = "https://api.jungle.rocks/api/v1/login/"
         init(email: String, password: String) {
-            url = "\(URL)/?email=\(email)&password=\(password)"
+            parameters = [
+                "email": email,
+                "password": password
+            ]
         }
     }
 }
