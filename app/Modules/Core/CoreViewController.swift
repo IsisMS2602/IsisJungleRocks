@@ -9,26 +9,27 @@
 import UIKit
 
 class CoreViewController: BaseViewController, StoryboardLoadable {
-
     // MARK: Static
-
     static func initModule() -> CoreViewController {
         let viewController = loadFromStoryboard()
         return viewController
     }
-
     // MARK: Outlets
     @IBOutlet weak var thisWeekButtonUI: UIButton!
     @IBOutlet weak var lastWeekButtonUI: UIButton!
     @IBOutlet weak var thisMonthButtonUI: UIButton!
-    @IBOutlet weak var coreTableView: UITableView!
+    @IBOutlet weak var coreTableView: UITableView! {
+        didSet {
+            coreTableView.reloadData()
+          
+        }
+    }
     @IBAction func thisWeekButton(_ sender: Any) {
         SessionHelper.shared.logout()
     }
-    //MARK: Variables
     var userImage = " "
-    // MARK: Life cycle
 
+    // MARK: Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setButtonsUI()
@@ -41,7 +42,12 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
     }
     private func setupTableView() {
         coreTableView.dataSource = self
+        coreTableView.delegate = self
         coreTableView.register(ProjectsTableViewCell.self)
+        coreTableView.backgroundColor = UIColor.clear
+        coreTableView.tableFooterView = UIView()
+        coreTableView.rowHeight = 88
+        coreTableView.separatorStyle = .none
     }
     func setButtonsUI() {
         thisWeekButtonUI.layer.cornerRadius = 20
@@ -56,12 +62,12 @@ extension CoreViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 5
     }
-
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(for: indexPath) as ProjectsTableViewCell
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(indexPath.row)
+   
     }
 }

@@ -23,4 +23,16 @@ class APIManager {
             ]
         }
     }
+    struct GetWorkLogs: APIRequestable {
+        typealias APIResponse = WorkLogResponse
+        var headers: HTTPHeaders?
+        var method: HTTPMethod = .post
+        var parameters: Parameters?
+        var url = "https://api.jungle.rocks/api/v1/user/worklogs/"
+        init(key: String) {
+            parameters = [
+                "key": key
+            ]
+        }
+    }
 }

@@ -8,7 +8,9 @@
 
 import Foundation
 
-
+struct WorkLogResponse: Codable {
+    let workLog: String?
+}
 
 struct UserResponse: Codable {
     let user: User

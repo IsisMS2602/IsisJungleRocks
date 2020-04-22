@@ -14,7 +14,6 @@ import AlamofireNetworkActivityLogger
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
     // MARK: Properties
     var window: UIWindow?
     // swiftlint:disable:next force_cast

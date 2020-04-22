@@ -3,7 +3,7 @@
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,9 +16,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gM1-FX-WHg">
-                                <rect key="frame" x="0.0" y="330" width="375" height="337"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            <tableView autoresizesSubviews="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gM1-FX-WHg">
+                                <rect key="frame" x="0.0" y="248" width="375" height="419"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <sections/>
                             </tableView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="21" translatesAutoresizingMaskIntoConstraints="NO" id="NJn-1z-Eox">
                                 <rect key="frame" x="24" y="24" width="327" height="40"/>
@@ -68,19 +70,23 @@
                                         </state>
                                     </button>
                                 </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Projects" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AJV-Yj-dNK">
-                                <rect key="frame" x="24" y="294.5" width="51" height="19.5"/>
+                                <rect key="frame" x="24" y="224" width="51" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="AlD-o1-UfH"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="14"/>
                                 <color key="textColor" red="0.31374899540000001" green="0.33788033309999999" blue="0.39968879569999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="gM1-FX-WHg" firstAttribute="top" secondItem="AJV-Yj-dNK" secondAttribute="bottom" constant="16" id="DTp-0r-RH7"/>
+                            <constraint firstItem="AJV-Yj-dNK" firstAttribute="top" secondItem="NJn-1z-Eox" secondAttribute="bottom" constant="160" id="1ah-jw-I1v"/>
+                            <constraint firstItem="gM1-FX-WHg" firstAttribute="top" secondItem="AJV-Yj-dNK" secondAttribute="bottom" id="3EP-NL-3Gq"/>
                             <constraint firstItem="NJn-1z-Eox" firstAttribute="top" secondItem="SS8-FV-YyP" secondAttribute="top" constant="24" id="DzV-6p-Mg3"/>
-                            <constraint firstItem="gM1-FX-WHg" firstAttribute="top" secondItem="NJn-1z-Eox" secondAttribute="bottom" constant="266" id="ToY-MT-0fx"/>
                             <constraint firstItem="AJV-Yj-dNK" firstAttribute="leading" secondItem="SS8-FV-YyP" secondAttribute="leading" constant="24" id="UQX-Dz-ZZQ"/>
                             <constraint firstItem="SS8-FV-YyP" firstAttribute="bottom" secondItem="gM1-FX-WHg" secondAttribute="bottom" id="UY0-FF-hbh"/>
                             <constraint firstItem="SS8-FV-YyP" firstAttribute="trailing" secondItem="NJn-1z-Eox" secondAttribute="trailing" constant="24" id="VpF-5X-fsT"/>
