@@ -21,7 +21,6 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
     @IBOutlet weak var coreTableView: UITableView! {
         didSet {
             coreTableView.reloadData()
-          
         }
     }
     @IBAction func thisWeekButton(_ sender: Any) {
@@ -35,6 +34,7 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
         setButtonsUI()
         setToolBar()
         setupTableView()
+        setNavigationBar(image: userImage)
     }
     override func viewWillAppear(_ animated: Bool) {
         super .viewWillAppear(false)
@@ -46,8 +46,10 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
         coreTableView.register(ProjectsTableViewCell.self)
         coreTableView.backgroundColor = UIColor.clear
         coreTableView.tableFooterView = UIView()
-        coreTableView.rowHeight = 88
+        coreTableView.tableHeaderView = UIView()
+        coreTableView.rowHeight = 200
         coreTableView.separatorStyle = .none
+        coreTableView.separatorColor = .clear
     }
     func setButtonsUI() {
         thisWeekButtonUI.layer.cornerRadius = 20
@@ -64,10 +66,11 @@ extension CoreViewController: UITableViewDataSource, UITableViewDelegate {
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(for: indexPath) as ProjectsTableViewCell
+        cell.separatorInset.right = .greatestFiniteMagnitude
+        cell.separatorInset.left = .greatestFiniteMagnitude
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(indexPath.row)
-   
     }
 }

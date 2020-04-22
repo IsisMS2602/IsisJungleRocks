@@ -7,6 +7,7 @@ PODS:
     - RxSwift (>= 4.4.2, ~> 4.4)
   - RxSwift (4.4.2):
     - RxAtomic (>= 4.4.2, ~> 4.4)
+  - SVProgressHUD (2.2.5)
   - SwiftLint (0.31.0)
 
 DEPENDENCIES:
@@ -14,6 +15,7 @@ DEPENDENCIES:
   - AlamofireNetworkActivityLogger (~> 2.4)
   - RxCocoa (~> 4.4.2)
   - RxSwift (~> 4.4.2)
+  - SVProgressHUD
   - SwiftLint (~> 0.31.0)
 
 SPEC REPOS:
@@ -23,6 +25,7 @@ SPEC REPOS:
     - RxAtomic
     - RxCocoa
     - RxSwift
+    - SVProgressHUD
     - SwiftLint
 
 SPEC CHECKSUMS:
@@ -31,8 +34,9 @@ SPEC CHECKSUMS:
   RxAtomic: d00e97c10db88c6f08540e0bf2752fc5a2404167
   RxCocoa: 477990dc3b4c3ff55fb0ac77e1cc06244e0aaec8
   RxSwift: 74c29b693c8e42b0f64400e8b06564575742d649
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftLint: 7a0227733d786395817373b2d0ca799fd0093ff3
 
-PODFILE CHECKSUM: 77671b7961340dc27bd7460755ad1d3dd97ee5a1
+PODFILE CHECKSUM: bb6c74fbb9ceec52a56467f5c9343e05be5122bf
 
 COCOAPODS: 1.9.1

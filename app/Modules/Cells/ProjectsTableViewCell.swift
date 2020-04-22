@@ -13,7 +13,7 @@ class ProjectsTableViewCell: UITableViewCell, NibLoadable {
         super.awakeFromNib()
         setupTableView()
         setUpHeaderView()
-        addShadow(view: headerProjectView!)
+        //addShadow(view: headerProjectView!)
         selectedBackgroundView?.backgroundColor = UIColor.white
     }
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -37,6 +37,7 @@ class ProjectsTableViewCell: UITableViewCell, NibLoadable {
         tasksTableView.rowHeight = 48
         tasksTableView.layer.borderWidth = 1
         tasksTableView.layer.borderColor = UIColor(red: 248/255, green: 248/255, blue: 250/255, alpha: 1).cgColor
+        tasksTableView.separatorStyle = .none
     }
     func setUpHeaderView() {
         headerProjectView.layer.cornerRadius = 4
@@ -45,7 +46,7 @@ class ProjectsTableViewCell: UITableViewCell, NibLoadable {
 
 extension ProjectsTableViewCell: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 1
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(for: indexPath) as TasksTableViewCell

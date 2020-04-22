@@ -13,7 +13,7 @@ target 'IsisJungleRocks' do
   pod 'RxCocoa', '~> 4.4.2'
   pod 'RxSwift', '~> 4.4.2'
   pod 'SwiftLint', '~> 0.31.0'
-  pod 'UICircularProgressRing'
+  pod 'SVProgressHUD'
   pod 'AlamofireNetworkActivityLogger', '~> 2.4', :configurations => ['staging debug', 'production debug']
 end
 

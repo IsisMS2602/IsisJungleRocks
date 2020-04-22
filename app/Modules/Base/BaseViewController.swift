@@ -51,5 +51,6 @@ class BaseViewController: UIViewController {
         let negativeSpace = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         negativeSpace.width = -25
         navigationItem.rightBarButtonItems = [negativeSpace, imageItem]
+        navigationItem.leftBarButtonItems = [negativeSpace]
     }
 }
