@@ -8,10 +8,6 @@
 
 import Foundation
 
-struct WorkLogResponse: Codable {
-    let workLog: String?
-}
-
 struct UserResponse: Codable {
     let user: User
     let key: String
@@ -40,12 +36,4 @@ struct User: Codable {
     let dateJoined: String?
     let dateLeft: String?
     let picture: String?
-    var firstname: String? {return firstName!}
-    var lastname: String? {return lastName!}
-    var githubusername: String? {return githubUsername!}
-    var accountname: String? {return accountName ?? " "}
-    var reactnative: Int? {return reactNative ?? 0}
-    var numberofHoursWorkingPerWeek: Int? {return numberOfHoursWorkingPerWeek ?? 0}
-    var datejoined: String? {return dateJoined ?? " "}
-    var dateleft: String? {return dateLeft ?? " "}
 }

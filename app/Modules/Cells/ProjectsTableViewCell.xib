@@ -24,10 +24,10 @@
                                 <rect key="frame" x="20" y="4" width="297" height="80"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="vXc-U4-7Lg">
-                                        <rect key="frame" x="20" y="28" width="24" height="24"/>
+                                        <rect key="frame" x="20" y="24" width="32" height="32"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="24" id="bK7-bC-504"/>
-                                            <constraint firstAttribute="height" constant="24" id="nPY-H6-gcD"/>
+                                            <constraint firstAttribute="width" constant="32" id="bK7-bC-504"/>
+                                            <constraint firstAttribute="height" constant="32" id="nPY-H6-gcD"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="6h" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OOQ-xn-Mpl">
@@ -37,7 +37,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="iyK-7h-UVo">
-                                        <rect key="frame" x="60" y="21" width="84.5" height="38"/>
+                                        <rect key="frame" x="68" y="21" width="84.5" height="38"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jungle Rocks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MXL-M6-Tfa">
                                                 <rect key="frame" x="0.0" y="0.0" width="84.5" height="16"/>
@@ -100,6 +100,10 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="headerProjectView" destination="biQ-dJ-vQe" id="pV9-g0-FNq"/>
+                <outlet property="loggedHouersLabel" destination="OOQ-xn-Mpl" id="4wv-Ot-K7U"/>
+                <outlet property="projectImage" destination="vXc-U4-7Lg" id="51I-2b-ThT"/>
+                <outlet property="projectLabel" destination="MXL-M6-Tfa" id="EZw-La-4qB"/>
+                <outlet property="tasksLabel" destination="EqF-OT-xt3" id="1j6-PW-j3f"/>
                 <outlet property="tasksTableView" destination="YUM-r7-9FV" id="4Le-gU-qVU"/>
             </connections>
             <point key="canvasLocation" x="125.36231884057972" y="145.98214285714286"/>
