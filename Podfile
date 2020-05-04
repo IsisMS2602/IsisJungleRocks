@@ -10,8 +10,8 @@ target 'IsisJungleRocks' do
 
   # Pods for IsisJungleRocks
   pod 'Alamofire', '~> 4.8.2'
-  pod 'RxCocoa', '~> 4.4.2'
-  pod 'RxSwift', '~> 4.4.2'
+  pod 'RxCocoa', '~> 5.1.0'
+  pod 'RxSwift', '~> 5.1.0'
   pod 'SwiftLint', '~> 0.31.0'
   pod 'SVProgressHUD'
   pod 'AlamofireNetworkActivityLogger', '~> 2.4', :configurations => ['staging debug', 'production debug']

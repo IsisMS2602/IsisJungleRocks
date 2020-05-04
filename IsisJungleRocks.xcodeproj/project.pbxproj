@@ -27,6 +27,7 @@
 		53B84180BA0414972D4240C1 /* RootRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F205C4AEF7B6B37C169DD74D /* RootRouter.swift */; };
 		559041DC9BC33F9ED3BEB96E /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD305C631619ECE8A483F29 /* String.swift */; };
 		6053AE17F5961F731E6C4F24 /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71335A3AFB92EF57DBA2D30A /* Reusable.swift */; };
+		63A090112458671B0080C614 /* CircularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A090102458671B0080C614 /* CircularView.swift */; };
 		63A2C9C92450EA780078C32E /* Projects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A2C9C82450EA780078C32E /* Projects.swift */; };
 		63EF3B572447B62F00546FAA /* Validetor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EF3B562447B62F00546FAA /* Validetor.swift */; };
 		63EF3B5A2447BC7A00546FAA /* Landing.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 63EF3B582447BC7A00546FAA /* Landing.storyboard */; };
@@ -83,6 +84,7 @@
 		550AD8D383486598C914B71D /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		5A276DD0375768AC7CD1DB07 /* NSAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSAttributedString.swift; sourceTree = "<group>"; };
 		5B3A5A7D1DF49DBA568CBCE8 /* NibLoadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibLoadable.swift; sourceTree = "<group>"; };
+		63A090102458671B0080C614 /* CircularView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CircularView.swift; path = app/Extensions/CircularView.swift; sourceTree = SOURCE_ROOT; };
 		63A2C9C82450EA780078C32E /* Projects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Projects.swift; path = app/Entities/Projects.swift; sourceTree = SOURCE_ROOT; };
 		63EF3B562447B62F00546FAA /* Validetor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Validetor.swift; path = app/Extensions/Validetor.swift; sourceTree = SOURCE_ROOT; };
 		63EF3B582447BC7A00546FAA /* Landing.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Landing.storyboard; path = app/Modules/Landing/Landing.storyboard; sourceTree = SOURCE_ROOT; };
@@ -347,6 +349,7 @@
 				4E079D0E1BD9207AB1EA7AD8 /* UIViewController.swift */,
 				F2538F76185326D85C374794 /* UIViewControllerArray.swift */,
 				63EF3B562447B62F00546FAA /* Validetor.swift */,
+				63A090102458671B0080C614 /* CircularView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -556,6 +559,7 @@
 				53B84180BA0414972D4240C1 /* RootRouter.swift in Sources */,
 				63F85A2324493E270027237E /* ProjectsTableViewCell.swift in Sources */,
 				E3ECA6455037248E390D313E /* RoundedBorder.swift in Sources */,
+				63A090112458671B0080C614 /* CircularView.swift in Sources */,
 				C74D2883BE5BBC493C48E751 /* SessionHelper.swift in Sources */,
 				EFC791548CDF4821DFCF0530 /* StoryboardLoadable.swift in Sources */,
 				63A2C9C92450EA780078C32E /* Projects.swift in Sources */,

@@ -19,12 +19,10 @@ class ProjectsTableViewCell: UITableViewCell, NibLoadable {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(true, animated: true)
     }
-    
     @IBOutlet weak var projectImage: UIImageView!
     @IBOutlet weak var projectLabel: UILabel!
     @IBOutlet weak var tasksLabel: UILabel!
     @IBOutlet weak var loggedHouersLabel: UILabel!
-    
     @IBOutlet weak var headerProjectView: UIView!
     @IBOutlet weak var tasksTableView: UITableView! {
         didSet {
