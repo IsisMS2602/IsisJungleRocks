@@ -45,7 +45,6 @@ class BaseViewController: UIViewController {
         let userImageView = UIImageView(image: userImage)
         userImageView.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         userImageView.layer.cornerRadius = userImageView.frame.size.width/2
-//        userImageView.layer.backgroundColor = UIColor(red: 200/255, green: 20/255, blue: 100/255, alpha: 1).cgColor
         userImageView.contentMode = .scaleAspectFit
         let imageItem = UIBarButtonItem(customView: userImageView)
         let negativeSpace = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)

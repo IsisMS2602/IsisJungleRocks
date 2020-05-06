@@ -19,6 +19,10 @@ class ProjectsTableViewCell: UITableViewCell, NibLoadable {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(true, animated: true)
     }
+    @IBOutlet weak var projectImage: UIImageView!
+    @IBOutlet weak var projectLabel: UILabel!
+    @IBOutlet weak var tasksLabel: UILabel!
+    @IBOutlet weak var loggedHouersLabel: UILabel!
     @IBOutlet weak var headerProjectView: UIView!
     @IBOutlet weak var tasksTableView: UITableView! {
         didSet {
@@ -41,6 +45,20 @@ class ProjectsTableViewCell: UITableViewCell, NibLoadable {
     }
     func setUpHeaderView() {
         headerProjectView.layer.cornerRadius = 4
+    }
+    func bind(image: String, text: String, time: String, tasks: String) {
+        let imageUrlString = image
+        guard let imageUrl:URL = URL(string: imageUrlString) else {
+            return
+        }
+        guard let imageData = try? Data(contentsOf: imageUrl) else {
+            return
+        }
+        projectImage.makeRounded()
+        self.projectImage.image = UIImage(data: imageData)
+        projectLabel.text = text
+        loggedHouersLabel.text = time
+        tasksLabel.text = tasks
     }
 }
 
