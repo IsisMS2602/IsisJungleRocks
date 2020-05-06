@@ -9,13 +9,20 @@
 import UIKit
 import SVProgressHUD
 
+enum ListOption {
+    case expandableCell(title: String, imgUrl: String, worklogs: [WorkLog])
+    case plainCell(worklog: WorkLog)
+}
+
 class CoreViewController: BaseViewController, StoryboardLoadable {
     // MARK: Static
+    
     static func initModule() -> CoreViewController {
         let viewController = loadFromStoryboard()
         return viewController
     }
     // MARK: Outlets
+    
     @IBOutlet weak var thisWeekButtonUI: UIButton!
     @IBOutlet weak var lastWeekButtonUI: UIButton!
     @IBOutlet weak var thisMonthButtonUI: UIButton!
@@ -28,18 +35,20 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
     @IBAction func thisWeekButton(_ sender: Any) {
         SessionHelper.shared.logout()
     }
+    // MARK: Variables
+    
+    typealias Section = (title: String, elements: [ListOption])
+    
     var circularView = CircularProgressView()
     var userImage: String = ""
-    let sections: [String] = ["Projects", "Other Activities", "Last Time Logs"]
     var worklogArray: [WorkLog] = [] {didSet {coreTableView.reloadData()}}
     var projectArray: [Project] = [] {didSet {coreTableView.reloadData()}}
-    var categoryArray: [WorkLog] = [] {didSet {coreTableView.reloadData()}}
+    var dataSource: [Section] = [] { didSet { coreTableView.reloadData() } }
     // MARK: Life cycle
     override func viewDidLoad() {
-        circularView.center.x = (viewForCircularView.center.x - 8)/2
+        circularView.center.x = (viewForCircularView.center.x + 16)/2
         circularView.center.y = (viewForCircularView.center.y - 8)/2
         viewForCircularView.addSubview(circularView)
-        
         super.viewDidLoad()
         SVProgressHUD.setDefaultAnimationType(.flat)
         SVProgressHUD.setDefaultMaskType(.gradient)
@@ -58,6 +67,7 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
         coreTableView.dataSource = self
         coreTableView.delegate = self
         coreTableView.register(ProjectsTableViewCell.self)
+        coreTableView.register(PlainTableViewCell.self)
         coreTableView.backgroundColor = UIColor.clear
         coreTableView.tableFooterView = UIView()
         coreTableView.tableHeaderView = UIView()
@@ -74,17 +84,11 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
         thisMonthButtonUI.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 250/255, alpha: 1)
     }
     func getUserTimeTrakking() {
-        APIManager.GetWorkLogs.init(key: "048955f1ea2594e640c70c15061cbd1025a03cdc").request {
-            response in
+        APIManager.GetWorkLogs().request { response in
             switch response {
             case .success(let worklog) :
                 self.getUserProjects()
-                self.worklogArray.append(contentsOf: worklog)
-                for i in 0...self.worklogArray.count-1 {
-                    if self.worklogArray[i].category == "Development" {
-                        self.categoryArray.append(contentsOf: worklog)
-                    }
-                }
+                self.worklogArray = worklog
             case .failure:
                 let alert = UIAlertController(title: "Unable to trek your time", message: "Check your conection status", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Dismiss", style: .destructive))
@@ -95,11 +99,11 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
         }
     }
     func getUserProjects() {
-        APIManager.GetProjects.init(key: "048955f1ea2594e640c70c15061cbd1025a03cdc").request {
-            response in
+        APIManager.GetProjects().request { response in
             switch response {
             case .success(let project) :
-                self.projectArray.append(contentsOf: project)
+                self.projectArray = project
+                self.dataSource = self.getSections()
                 SVProgressHUD.dismiss()
             case .failure:
                 let alert = UIAlertController(title: "Unable to trek your projects", message: "Check your conection status", preferredStyle: .alert)
@@ -109,10 +113,59 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
             }
         }
     }
+    func getSections() -> [Section] {
+        return [
+            getProjectsSection(),
+            getOtherActivitiesSection(),
+            getLastTimeLogsSection()
+        ]
+    }
+    func getProjectsSection() -> Section {
+        let filteredArray = self.worklogArray.filter { worklog in
+            worklog.category == "Development"
+        }
+        let categoryMap = Dictionary(grouping: filteredArray, by: { $0.issue?.projectKey })
+        let elements = categoryMap.compactMap { (key, elements) -> ListOption? in
+            let project = projectArray.first { element in
+                element.key == key
+            }
+            guard key != nil,
+                let safeProject = project else { return nil }
+            return ListOption.expandableCell(title: safeProject.name, imgUrl: safeProject.image, worklogs: elements)
+        }
+        return Section(
+            title: "Projects",
+            elements: elements)
+    }
+
+    func getOtherActivitiesSection() -> Section {
+        let filteredArray = self.worklogArray.filter { worklog in
+            worklog.category != "Development"
+        }
+        let categoryMap = Dictionary(grouping: filteredArray, by: { $0.category })
+        let elements = categoryMap.map { (key, elements) in
+            ListOption.expandableCell(title: key.uppercased(), imgUrl: "", worklogs: elements)
+        }
+        return Section(
+            title: "Other activities",
+            elements: elements)
+    }
+    func getLastTimeLogsSection() -> Section {
+          let filteredArray = self.worklogArray.filter { worklog in
+              worklog.category != "Development"
+          }
+          let categoryMap = Dictionary(grouping: filteredArray, by: { $0.category })
+          let elements = categoryMap.map { (key, elements) in
+            ListOption.plainCell(worklog: elements[0])
+          }
+          return Section(
+              title: "Last time logs",
+              elements: elements)
+      }
 }
 extension CoreViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+        return dataSource.count
     }
     //    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     //         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 30))
@@ -120,67 +173,29 @@ extension CoreViewController: UITableViewDataSource {
     //        return headerView
     //    }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        var sectionTitle: String = ""
-        switch section {
-        case 0:
-            sectionTitle = sections[0]
-        case 1:
-            sectionTitle = sections[1]
-        case 2:
-            sectionTitle = sections[2]
-        default:
-            sectionTitle = " "
-        }
-        return sectionTitle
+        return dataSource[section].title
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var numberOfRowsInSection = 0
-        switch section {
-        case 0:
-            numberOfRowsInSection = projectArray.count
-        case 1:
-            numberOfRowsInSection = categoryArray.count
-        case 2:
-            numberOfRowsInSection = projectArray.count
-        default:
-            numberOfRowsInSection =  0
-        }
-        return numberOfRowsInSection
+        return dataSource[section].elements.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(for: indexPath) as ProjectsTableViewCell
-        switch indexPath.section {
-        case 0:
+        let element = dataSource[indexPath.section].elements[indexPath.row]
+        switch element {
+        case .expandableCell(let title, let imgUrl, let worklogs):
             let cell = tableView.dequeueReusableCell(for: indexPath) as ProjectsTableViewCell
-            cell.separatorInset.right = .greatestFiniteMagnitude
-            cell.separatorInset.left = .greatestFiniteMagnitude
-            let workLog = worklogArray[indexPath.row]
-            let projects = projectArray[indexPath.row]
-            cell.bind(image: projects.image, text: projects.name, time: "\(workLog.timeSpent/3600)h", tasks: "\(workLog.category.count) tasks")
+            cell.bind(image: imgUrl, text: title, time: "\(worklogs[0].timeSpent/3600) h", tasks: "\(worklogs.count) tasks")
             return cell
-        case 1:
-            let cell = tableView.dequeueReusableCell(for: indexPath) as ProjectsTableViewCell
-            let catergory = categoryArray[indexPath.row]
-            cell.bind(image: "", text: catergory.category, time: "\(catergory.timeSpent/3600)h", tasks: "\(catergory.category.count) tasks")
+        case .plainCell(let worklog):
+            let cell = tableView.dequeueReusableCell(for: indexPath) as PlainTableViewCell
             return cell
-        case 2:
-            let cell = tableView.dequeueReusableCell(for: indexPath) as ProjectsTableViewCell
-            return cell
-        default:
-            break
         }
-        return cell
     }
 }
 extension CoreViewController: UITableViewDelegate {
     //    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    //
-    //
     //        print(indexPath.row)
     //        tableView.rowHeight = 188
     //        coreTableView.reloadData()
-    //
-    //
     //    }
     //    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
     //        print(indexPath.row, "deselected")

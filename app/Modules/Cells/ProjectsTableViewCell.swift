@@ -47,18 +47,18 @@ class ProjectsTableViewCell: UITableViewCell, NibLoadable {
         headerProjectView.layer.cornerRadius = 4
     }
     func bind(image: String, text: String, time: String, tasks: String) {
-        let imageUrlString = image
-        guard let imageUrl:URL = URL(string: imageUrlString) else {
-            return
-        }
-        guard let imageData = try? Data(contentsOf: imageUrl) else {
-            return
-        }
+        
         projectImage.makeRounded()
-        self.projectImage.image = UIImage(data: imageData)
+        
         projectLabel.text = text
         loggedHouersLabel.text = time
         tasksLabel.text = tasks
+        let imageUrlString = image
+        guard let imageUrl: URL = URL(string: imageUrlString),
+            let imageData = try? Data(contentsOf: imageUrl) else {
+            return
+        }
+        self.projectImage.image = UIImage(data: imageData)
     }
 }
 

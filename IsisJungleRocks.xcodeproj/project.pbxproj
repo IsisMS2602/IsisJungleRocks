@@ -29,6 +29,8 @@
 		6053AE17F5961F731E6C4F24 /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71335A3AFB92EF57DBA2D30A /* Reusable.swift */; };
 		63A090112458671B0080C614 /* CircularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A090102458671B0080C614 /* CircularView.swift */; };
 		63A2C9C92450EA780078C32E /* Projects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A2C9C82450EA780078C32E /* Projects.swift */; };
+		63D9AEB22460865600D9B7A4 /* PlainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D9AEB02460865600D9B7A4 /* PlainTableViewCell.swift */; };
+		63D9AEB32460865600D9B7A4 /* PlainTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63D9AEB12460865600D9B7A4 /* PlainTableViewCell.xib */; };
 		63EF3B572447B62F00546FAA /* Validetor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EF3B562447B62F00546FAA /* Validetor.swift */; };
 		63EF3B5A2447BC7A00546FAA /* Landing.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 63EF3B582447BC7A00546FAA /* Landing.storyboard */; };
 		63EF3B5B2447BC7A00546FAA /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EF3B592447BC7A00546FAA /* LandingViewController.swift */; };
@@ -86,6 +88,8 @@
 		5B3A5A7D1DF49DBA568CBCE8 /* NibLoadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibLoadable.swift; sourceTree = "<group>"; };
 		63A090102458671B0080C614 /* CircularView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CircularView.swift; path = app/Extensions/CircularView.swift; sourceTree = SOURCE_ROOT; };
 		63A2C9C82450EA780078C32E /* Projects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Projects.swift; path = app/Entities/Projects.swift; sourceTree = SOURCE_ROOT; };
+		63D9AEB02460865600D9B7A4 /* PlainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PlainTableViewCell.swift; path = app/Modules/Cells/PlainTableViewCell.swift; sourceTree = SOURCE_ROOT; };
+		63D9AEB12460865600D9B7A4 /* PlainTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PlainTableViewCell.xib; path = app/Modules/Cells/PlainTableViewCell.xib; sourceTree = SOURCE_ROOT; };
 		63EF3B562447B62F00546FAA /* Validetor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Validetor.swift; path = app/Extensions/Validetor.swift; sourceTree = SOURCE_ROOT; };
 		63EF3B582447BC7A00546FAA /* Landing.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Landing.storyboard; path = app/Modules/Landing/Landing.storyboard; sourceTree = SOURCE_ROOT; };
 		63EF3B592447BC7A00546FAA /* LandingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LandingViewController.swift; path = app/Modules/Landing/LandingViewController.swift; sourceTree = SOURCE_ROOT; };
@@ -265,6 +269,8 @@
 				63F85A2224493E270027237E /* ProjectsTableViewCell.xib */,
 				63F85A1D24493CF10027237E /* TasksTableViewCell.swift */,
 				63F85A1E24493CF10027237E /* TasksTableViewCell.xib */,
+				63D9AEB02460865600D9B7A4 /* PlainTableViewCell.swift */,
+				63D9AEB12460865600D9B7A4 /* PlainTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -463,6 +469,7 @@
 				67E328C6E7DB6E65FBD3CF5A /* LaunchScreen.storyboard in Resources */,
 				63F85A2424493E270027237E /* ProjectsTableViewCell.xib in Resources */,
 				63F85A2024493CF10027237E /* TasksTableViewCell.xib in Resources */,
+				63D9AEB32460865600D9B7A4 /* PlainTableViewCell.xib in Resources */,
 				EF2FDE6AA9627D97503AC79F /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -570,6 +577,7 @@
 				0FB59702D943F1249A2675F0 /* UICollectionView.swift in Sources */,
 				A32B7CD6C0B37A8B2769D335 /* UIColor.swift in Sources */,
 				63F85A1F24493CF10027237E /* TasksTableViewCell.swift in Sources */,
+				63D9AEB22460865600D9B7A4 /* PlainTableViewCell.swift in Sources */,
 				4D325853522C422F561E4249 /* UIFont.swift in Sources */,
 				FB7B1C6CE963046A83D89007 /* UIImageView.swift in Sources */,
 				704F99BDF01E16D6B54CF62C /* UILabel.swift in Sources */,
