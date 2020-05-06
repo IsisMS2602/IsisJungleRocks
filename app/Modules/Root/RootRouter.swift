@@ -11,13 +11,10 @@ import UIKit
 final class RootRouter {
 
     // MARK: Static
-
     static func initModule() -> RootRouter {
         return RootRouter()
     }
-
     // MARK: Actions
-
     func presentInitialScreen() {
         if SessionHelper.shared.isUserLogged {
             presentCoreScreen()
@@ -25,25 +22,22 @@ final class RootRouter {
             presentLandingScreen()
         }
     }
-
     // MARK: Private
-
     private func presentLandingScreen() {
         let landingViewController = LandingViewController.initModule()
         presentAsRoot(landingViewController)
     }
-
     private func presentCoreScreen() {
         let coreViewController = CoreViewController.initModule()
         presentAsRoot(coreViewController)
     }
 }
-
 private extension RootRouter {
     func presentAsRoot(_ viewController: UIViewController) {
         guard let window = AppDelegate.shared.window else { return }
         window.backgroundColor = .white
         window.makeKeyAndVisible()
-        window.rootViewController = viewController
+        let navigationController = UINavigationController(rootViewController: viewController)
+        window.rootViewController = navigationController
     }
 }

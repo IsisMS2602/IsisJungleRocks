@@ -20,7 +20,6 @@ final class SessionHelper {
     private let decoder = JSONDecoder()
 
     // MARK: Properties
-    
     var authToken: String? {
         guard let data = KeychainHelper.loadData(forKey: .authToken) else { return nil }
         return String(data: data, encoding: .utf8)

@@ -41,4 +41,11 @@ extension NibLoadable where Self: UIView {
         view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.addSubview(view)
     }
+    func addShadow(view: UIView, offset: CGSize = CGSize(width: 0, height: 0), color: UIColor = .black, opacity: Float = 0.1, radius: CGFloat = 4.0) {
+          view.layer.masksToBounds = false
+          view.layer.shadowColor = color.cgColor
+          view.layer.shadowOffset = offset
+          view.layer.shadowOpacity = opacity
+          view.layer.shadowRadius = radius
+      }
 }

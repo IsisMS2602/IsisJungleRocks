@@ -35,7 +35,7 @@ final class KeychainHelper {
         let query = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key.rawValue ,
-            kSecReturnData as String: kCFBooleanTrue,
+            kSecReturnData as String: kCFBooleanTrue ?? 0,
             kSecMatchLimit as String: kSecMatchLimitOne
             ] as [String: Any]
 
