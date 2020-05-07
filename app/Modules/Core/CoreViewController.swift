@@ -10,7 +10,7 @@ import UIKit
 import SVProgressHUD
 
 enum ListOption {
-    case expandableCell(title: String, imgUrl: String, worklogs: [WorkLog])
+    case expandableCell(title: String, key: String, imgUrl: String, worklogs: [WorkLog])
     case plainCell(worklogs: WorkLog)
 }
 
@@ -34,6 +34,7 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
         SessionHelper.shared.logout()
     }
     // MARK: Variables
+    var selectedKey: String?
     typealias Section = (title: String, elements: [ListOption])
     var circularView = CircularProgressView()
     var userImage: String = ""
@@ -69,8 +70,6 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
         coreTableView.tableHeaderView = UIView()
         coreTableView.separatorStyle = .none
         coreTableView.separatorColor = .clear
-        
-        coreTableView.rowHeight = 300
     }
     func setButtonsUI() {
         thisWeekButtonUI.layer.cornerRadius = 20
@@ -126,40 +125,40 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
             let project = projectArray.first { element in
                 element.key == key
             }
-            guard key != nil,
+            guard let key = key,
                 let safeProject = project else { return nil }
-            return ListOption.expandableCell(title: safeProject.name, imgUrl: safeProject.image, worklogs: elements)
+            return ListOption.expandableCell(title: safeProject.name, key: key, imgUrl: safeProject.image, worklogs: elements)
         }
         return Section(
             title: "Projects",
             elements: elements)
     }
-
+    
     func getOtherActivitiesSection() -> Section {
         let filteredArray = self.worklogArray.filter { worklog in
             worklog.category != "Development"
         }
         let categoryMap = Dictionary(grouping: filteredArray, by: { $0.category })
         let elements = categoryMap.map { (key, elements) in
-            ListOption.expandableCell(title: key.uppercased(), imgUrl: "", worklogs: elements)
+            ListOption.expandableCell(title: key, key: key, imgUrl: "", worklogs: elements)
         }
         return Section(
             title: "Other activities",
             elements: elements)
     }
     func getLastTimeLogsSection() -> Section {
-//          biblioteca de tempo
-//          let filteredArray = self.worklogArray.filter { worklog in
-//              worklog.createdAt != last hours
-//          }
+        //          biblioteca de tempo
+        //          let filteredArray = self.worklogArray.filter { worklog in
+        //              worklog.createdAt != last hours
+        //          }
         let categoryMap = Dictionary(grouping: worklogArray, by: { $0.issue?.key })
-        let elements = categoryMap.map { (key, elements) in
+        let elements = categoryMap.map { ( _, elements) in
             ListOption.plainCell(worklogs: elements[0])
-          }
-          return Section(
-              title: "Last time logs",
-              elements: elements)
-      }
+        }
+        return Section(
+            title: "Last time logs",
+            elements: elements)
+    }
 }
 extension CoreViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -177,21 +176,32 @@ extension CoreViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let element = dataSource[indexPath.section].elements[indexPath.row]
         switch element {
-        case .expandableCell(let title, let imgUrl, let worklogs):
+        case .expandableCell(let title, let key, let imgUrl, let worklogs):
             let cell = tableView.dequeueReusableCell(for: indexPath) as ProjectsTableViewCell
             cell.bind(image: imgUrl, text: title, time: "\(worklogs[0].timeSpent/3600) h", tasks: "\(worklogs.count) tasks", worklogs: worklogs)
+            if key == selectedKey ?? " " {
+                cell.tableViewHeight.constant = CGFloat((60 * worklogs.count)+10)
+            }
+            if key != selectedKey ?? " " {
+                cell.tableViewHeight.constant = 0
+            }
             return cell
         case .plainCell(let worklog):
             let cell = tableView.dequeueReusableCell(for: indexPath) as PlainTableViewCell
-            cell.bind(key: (worklog.issue?.key) ?? "No recent logs", time: (worklog.createdAt) ?? " no answer ")
+            cell.bind(key: (worklog.issue?.key) ?? "Other Activities", time: (worklog.createdAt) ?? " ")
             return cell
         }
     }
 }
 extension CoreViewController: UITableViewDelegate {
-    //    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    //        print(indexPath.row)
-    //        tableView.rowHeight = 188
-    //        coreTableView.reloadData()
-    //    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let element = dataSource[indexPath.section].elements[indexPath.row]
+        switch element {
+        case .expandableCell( _, let key, _, _):
+            selectedKey = key
+            tableView.reloadData()
+        default:
+            break
+        }
+    }
 }

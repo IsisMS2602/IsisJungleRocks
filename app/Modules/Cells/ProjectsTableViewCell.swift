@@ -14,13 +14,17 @@ class ProjectsTableViewCell: UITableViewCell, NibLoadable {
         setupTableView()
         setUpHeaderView()
         addShadow(view: headerProjectView!)
-        selectedBackgroundView?.backgroundColor = UIColor.clear
+        //selectedBackgroundView?.backgroundColor = UIColor.clear
     }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(false, animated: false)
     }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+    }
     // MARK: Variables
     var dataSource: [WorkLog] = [] { didSet {} }
+    @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
     @IBOutlet weak var colorView: UIView!
     @IBOutlet weak var projectImage: UIImageView!
     @IBOutlet weak var projectLabel: UILabel!
@@ -34,17 +38,17 @@ class ProjectsTableViewCell: UITableViewCell, NibLoadable {
     private func setupTableView() {
         tasksTableView.dataSource = self
         tasksTableView.delegate = self
-        tasksTableView.register(TasksTableViewCell.self)
-        //  tasksTableView.isHidden = true
         tasksTableView.tableFooterView = UIView()
         tasksTableView.tableHeaderView = UIView()
+        tasksTableView.register(TasksTableViewCell.self)
         tasksTableView.backgroundColor = UIColor.white
         tasksTableView.layer.cornerRadius = 4
         tasksTableView.separatorInset = .zero
-        tasksTableView.rowHeight = 48
         tasksTableView.layer.borderWidth = 1
         tasksTableView.layer.borderColor = UIColor(red: 248/255, green: 248/255, blue: 250/255, alpha: 1).cgColor
         tasksTableView.separatorStyle = .none
+        tasksTableView.rowHeight = UITableView.automaticDimension
+        tasksTableView.estimatedRowHeight = 48
     }
     func setUpHeaderView() {
         headerProjectView.layer.cornerRadius = 4
@@ -62,6 +66,8 @@ class ProjectsTableViewCell: UITableViewCell, NibLoadable {
         self.projectImage.image = UIImage(data: imageData)
         projectImage.makeRounded()
         self.dataSource = worklogs
+    }
+    func setCellHeight() {
     }
 }
 
