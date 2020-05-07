@@ -82,8 +82,7 @@ class LandingViewController: BaseViewController, StoryboardLoadable {
         SVProgressHUD.setDefaultAnimationType(.flat)
         SVProgressHUD.setDefaultMaskType(.gradient)
         SVProgressHUD.show()
-        APIManager.Login.init(email: email, password: password).request {
-            response in
+        APIManager.Login.init(email: email, password: password).request { response in
             switch response {
             case .success(let userResponse) :
                     print("sucesso")

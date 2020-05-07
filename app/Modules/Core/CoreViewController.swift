@@ -11,18 +11,16 @@ import SVProgressHUD
 
 enum ListOption {
     case expandableCell(title: String, imgUrl: String, worklogs: [WorkLog])
-    case plainCell(worklog: WorkLog)
+    case plainCell(worklogs: WorkLog)
 }
 
 class CoreViewController: BaseViewController, StoryboardLoadable {
     // MARK: Static
-    
     static func initModule() -> CoreViewController {
         let viewController = loadFromStoryboard()
         return viewController
     }
     // MARK: Outlets
-    
     @IBOutlet weak var thisWeekButtonUI: UIButton!
     @IBOutlet weak var lastWeekButtonUI: UIButton!
     @IBOutlet weak var thisMonthButtonUI: UIButton!
@@ -36,14 +34,12 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
         SessionHelper.shared.logout()
     }
     // MARK: Variables
-    
     typealias Section = (title: String, elements: [ListOption])
-    
     var circularView = CircularProgressView()
     var userImage: String = ""
     var worklogArray: [WorkLog] = [] {didSet {coreTableView.reloadData()}}
     var projectArray: [Project] = [] {didSet {coreTableView.reloadData()}}
-    var dataSource: [Section] = [] { didSet { coreTableView.reloadData() } }
+    var dataSource: [Section] = [] { didSet {coreTableView.reloadData()}}
     // MARK: Life cycle
     override func viewDidLoad() {
         circularView.center.x = (viewForCircularView.center.x + 16)/2
@@ -71,9 +67,10 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
         coreTableView.backgroundColor = UIColor.clear
         coreTableView.tableFooterView = UIView()
         coreTableView.tableHeaderView = UIView()
-        coreTableView.rowHeight = 88
         coreTableView.separatorStyle = .none
         coreTableView.separatorColor = .clear
+        
+        coreTableView.rowHeight = 300
     }
     func setButtonsUI() {
         thisWeekButtonUI.layer.cornerRadius = 20
@@ -151,12 +148,13 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
             elements: elements)
     }
     func getLastTimeLogsSection() -> Section {
-          let filteredArray = self.worklogArray.filter { worklog in
-              worklog.category != "Development"
-          }
-          let categoryMap = Dictionary(grouping: filteredArray, by: { $0.category })
-          let elements = categoryMap.map { (key, elements) in
-            ListOption.plainCell(worklog: elements[0])
+//          biblioteca de tempo
+//          let filteredArray = self.worklogArray.filter { worklog in
+//              worklog.createdAt != last hours
+//          }
+        let categoryMap = Dictionary(grouping: worklogArray, by: { $0.issue?.key })
+        let elements = categoryMap.map { (key, elements) in
+            ListOption.plainCell(worklogs: elements[0])
           }
           return Section(
               title: "Last time logs",
@@ -167,11 +165,9 @@ extension CoreViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return dataSource.count
     }
-    //    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    //         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 30))
-    //         headerView.backgroundColor = UIColor.clear
-    //        return headerView
-    //    }
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        view.tintColor = UIColor.clear
+    }
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return dataSource[section].title
     }
@@ -183,10 +179,11 @@ extension CoreViewController: UITableViewDataSource {
         switch element {
         case .expandableCell(let title, let imgUrl, let worklogs):
             let cell = tableView.dequeueReusableCell(for: indexPath) as ProjectsTableViewCell
-            cell.bind(image: imgUrl, text: title, time: "\(worklogs[0].timeSpent/3600) h", tasks: "\(worklogs.count) tasks")
+            cell.bind(image: imgUrl, text: title, time: "\(worklogs[0].timeSpent/3600) h", tasks: "\(worklogs.count) tasks", worklogs: worklogs)
             return cell
         case .plainCell(let worklog):
             let cell = tableView.dequeueReusableCell(for: indexPath) as PlainTableViewCell
+            cell.bind(key: (worklog.issue?.key) ?? "No recent logs", time: (worklog.createdAt) ?? " no answer ")
             return cell
         }
     }
@@ -195,11 +192,6 @@ extension CoreViewController: UITableViewDelegate {
     //    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     //        print(indexPath.row)
     //        tableView.rowHeight = 188
-    //        coreTableView.reloadData()
-    //    }
-    //    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-    //        print(indexPath.row, "deselected")
-    //        tableView.rowHeight = 88
     //        coreTableView.reloadData()
     //    }
 }

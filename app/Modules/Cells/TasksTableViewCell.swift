@@ -9,20 +9,25 @@
 import UIKit
 
 class TasksTableViewCell: UITableViewCell, NibLoadable {
-
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(false, animated: false)
+    }
     override func awakeFromNib() {
         super.awakeFromNib()
-        setTaskView()
-        cellView.layer.borderWidth = 1
-        cellView.layer.borderColor = UIColor(red: 248/255, green: 248/255, blue: 250/255, alpha: 1).cgColor
-        cellView.layer.cornerRadius = 4
+        setTaskUICell(view: cellView)
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
+    @IBOutlet weak var keyLabel: UILabel!
+    @IBOutlet weak var taskNameLabel: UILabel!
+    @IBOutlet weak var timeLoggedLabel: UILabel!
     @IBOutlet weak var cellView: UIView!
-    func setTaskView() {
-
+    func setTaskUICell (view: UIView) {
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor(red: 248/255, green: 248/255, blue: 250/255, alpha: 1).cgColor
+        view.layer.cornerRadius = 4
+    }
+    func bindTasks(key: String, taskName: String, timeLogged: String) {
+        keyLabel.text = key.uppercased()
+        taskNameLabel.text = taskName
+        timeLoggedLabel.text = timeLogged
     }
 }

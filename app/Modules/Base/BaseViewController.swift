@@ -32,8 +32,8 @@ class BaseViewController: UIViewController {
         items.append(UIBarButtonItem(image: UIImage(named: "home16Px"), style: .plain, target: self, action: nil))
         items.append(UIBarButtonItem(image: UIImage(named: "projects16Px"), style: .plain, target: self, action: nil))
         items.append(UIBarButtonItem(image: UIImage(named: "icKebab16Px"), style: .plain, target: self, action: nil))
-        for i in 0...4 {
-            items[i].tintColor = UIColor.gray
+        for index in 0...4 {
+            items[index].tintColor = UIColor.gray
         }
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: self, action: nil)
         self.toolbarItems = [flexibleSpace, items[0], flexibleSpace, items[1], flexibleSpace, items[2], flexibleSpace, items[3], flexibleSpace, items[4], flexibleSpace]

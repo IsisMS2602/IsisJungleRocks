@@ -13,12 +13,15 @@ class ProjectsTableViewCell: UITableViewCell, NibLoadable {
         super.awakeFromNib()
         setupTableView()
         setUpHeaderView()
-        //addShadow(view: headerProjectView!)
-        selectedBackgroundView?.backgroundColor = UIColor.white
+        addShadow(view: headerProjectView!)
+        selectedBackgroundView?.backgroundColor = UIColor.clear
     }
     override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(true, animated: true)
+        super.setSelected(false, animated: false)
     }
+    // MARK: Variables
+    var dataSource: [WorkLog] = [] { didSet {} }
+    @IBOutlet weak var colorView: UIView!
     @IBOutlet weak var projectImage: UIImageView!
     @IBOutlet weak var projectLabel: UILabel!
     @IBOutlet weak var tasksLabel: UILabel!
@@ -45,29 +48,31 @@ class ProjectsTableViewCell: UITableViewCell, NibLoadable {
     }
     func setUpHeaderView() {
         headerProjectView.layer.cornerRadius = 4
+        colorView.layer.cornerRadius = 2
     }
-    func bind(image: String, text: String, time: String, tasks: String) {
-        
-        projectImage.makeRounded()
-        
+    func bind(image: String, text: String, time: String, tasks: String, worklogs: [WorkLog]) {
         projectLabel.text = text
         loggedHouersLabel.text = time
         tasksLabel.text = tasks
         let imageUrlString = image
         guard let imageUrl: URL = URL(string: imageUrlString),
             let imageData = try? Data(contentsOf: imageUrl) else {
-            return
+                return
         }
         self.projectImage.image = UIImage(data: imageData)
+        projectImage.makeRounded()
+        self.dataSource = worklogs
     }
 }
 
 extension ProjectsTableViewCell: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return dataSource.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(for: indexPath) as TasksTableViewCell
+        let element = dataSource[indexPath.row]
+        cell.bindTasks(key: (element.issue?.key) ?? "", taskName: (element.issue?.components?[0]) ?? "", timeLogged: "\(element.timeSpent/3600) h")
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
