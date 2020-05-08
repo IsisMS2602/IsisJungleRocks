@@ -8,9 +8,10 @@
 
 import Foundation
 
-struct Project: Codable{
+struct Project: Codable {
     let name: String
     let image: String
+    let key: String
 }
 
 //struct WorkLog: Codable {

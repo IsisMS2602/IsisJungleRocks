@@ -25,26 +25,14 @@ class APIManager {
     }
     struct GetWorkLogs: APIRequestable {
         typealias APIResponse = [WorkLog]
-        var headers: HTTPHeaders?
         var method: HTTPMethod = .get
         var parameters: Parameters?
         var url = "https://api.jungle.rocks/api/v1/worklogs/"
-        init(key: String) {
-            headers = [
-                "Authorization": "Token \(key)"
-            ]
-        }
     }
     struct GetProjects: APIRequestable {
            typealias APIResponse = [Project]
-           var headers: HTTPHeaders?
            var method: HTTPMethod = .get
            var parameters: Parameters?
            var url = "https://api.jungle.rocks/api/v1/projects/"
-           init(key: String) {
-               headers = [
-                   "Authorization": "Token \(key)"
-               ]
-           }
        }
 }

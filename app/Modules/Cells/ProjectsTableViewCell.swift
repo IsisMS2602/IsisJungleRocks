@@ -13,12 +13,19 @@ class ProjectsTableViewCell: UITableViewCell, NibLoadable {
         super.awakeFromNib()
         setupTableView()
         setUpHeaderView()
-        //addShadow(view: headerProjectView!)
-        selectedBackgroundView?.backgroundColor = UIColor.white
+        addShadow(view: headerProjectView!)
+        //selectedBackgroundView?.backgroundColor = UIColor.clear
     }
     override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(true, animated: true)
+        super.setSelected(false, animated: false)
     }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+    }
+    // MARK: Variables
+    var dataSource: [WorkLog] = [] { didSet {tasksTableView.reloadData()} }
+    @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var colorView: UIView!
     @IBOutlet weak var projectImage: UIImageView!
     @IBOutlet weak var projectLabel: UILabel!
     @IBOutlet weak var tasksLabel: UILabel!
@@ -31,43 +38,52 @@ class ProjectsTableViewCell: UITableViewCell, NibLoadable {
     private func setupTableView() {
         tasksTableView.dataSource = self
         tasksTableView.delegate = self
-        tasksTableView.register(TasksTableViewCell.self)
-        //  tasksTableView.isHidden = true
         tasksTableView.tableFooterView = UIView()
         tasksTableView.tableHeaderView = UIView()
+        tasksTableView.register(TasksTableViewCell.self)
         tasksTableView.backgroundColor = UIColor.white
         tasksTableView.layer.cornerRadius = 4
         tasksTableView.separatorInset = .zero
-        tasksTableView.rowHeight = 48
         tasksTableView.layer.borderWidth = 1
         tasksTableView.layer.borderColor = UIColor(red: 248/255, green: 248/255, blue: 250/255, alpha: 1).cgColor
         tasksTableView.separatorStyle = .none
+        tasksTableView.rowHeight = UITableView.automaticDimension
+        tasksTableView.estimatedRowHeight = 48
     }
     func setUpHeaderView() {
         headerProjectView.layer.cornerRadius = 4
+        colorView.layer.cornerRadius = 2
     }
-    func bind(image: String, text: String, time: String, tasks: String) {
-        let imageUrlString = image
-        guard let imageUrl:URL = URL(string: imageUrlString) else {
-            return
-        }
-        guard let imageData = try? Data(contentsOf: imageUrl) else {
-            return
-        }
-        projectImage.makeRounded()
-        self.projectImage.image = UIImage(data: imageData)
+    func bind(image: String, text: String, time: String, tasks: String, worklogs: [WorkLog], isExpanded: Bool) {
         projectLabel.text = text
         loggedHouersLabel.text = time
         tasksLabel.text = tasks
+        let imageUrlString = image
+        guard let imageUrl: URL = URL(string: imageUrlString),
+            let imageData = try? Data(contentsOf: imageUrl) else {
+                return
+        }
+        self.projectImage.image = UIImage(data: imageData)
+        projectImage.makeRounded()
+        self.dataSource = worklogs
+        if isExpanded {
+            tableViewHeight.constant = CGFloat((60 * worklogs.count)+10)
+        }
+        if !isExpanded {
+            tableViewHeight.constant = 0
+        }
+    }
+    func setCellHeight() {
     }
 }
-
 extension ProjectsTableViewCell: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return dataSource.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(for: indexPath) as TasksTableViewCell
+        let element = dataSource[indexPath.row]
+        cell.bindTasks(key: (element.issue?.key) ?? "", taskName: (element.issue?.components?[0]) ?? "", timeLogged: "\(element.timeSpent/3600) h")
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

@@ -26,8 +26,8 @@ class CircularProgressView: UIView {
         layers.append(circleLayer)
         layers.append(progressLayer)
         layers.append(someOtherLayer)
-        for i in 0...3 {
-            createCircularPath(layers: layers[i], start: begininPoint, end: percentagePoint * endPoint, color: colors[i])
+        for index in 0...3 {
+            createCircularPath(layers: layers[index], start: begininPoint, end: percentagePoint * endPoint, color: colors[index])
             begininPoint = percentagePoint * endPoint
             endPoint += 25
         }
@@ -36,7 +36,7 @@ class CircularProgressView: UIView {
         super.init(coder: aDecoder)
     }
     func createCircularPath(layers: CAShapeLayer, start: CGFloat, end: CGFloat, color: CGColor) {
-        let circularPath = UIBezierPath(arcCenter: CGPoint(x: frame.size.width/2, y: frame.size.height/2), radius: 72, startAngle: start, endAngle:  end, clockwise: true)
+        let circularPath = UIBezierPath(arcCenter: CGPoint(x: frame.size.width/2, y: frame.size.height/2), radius: 72, startAngle: start, endAngle: end, clockwise: true)
         layers.path = circularPath.cgPath
         layers.fillColor = UIColor.clear.cgColor
         layers.lineCap = .butt
