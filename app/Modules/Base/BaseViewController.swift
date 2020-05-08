@@ -47,9 +47,6 @@ class BaseViewController: UIViewController {
         userImageView.layer.cornerRadius = userImageView.frame.size.width/2
         userImageView.contentMode = .scaleAspectFit
         let imageItem = UIBarButtonItem(customView: userImageView)
-        let negativeSpace = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-        negativeSpace.width = -25
-        navigationItem.rightBarButtonItems = [negativeSpace, imageItem]
-        navigationItem.leftBarButtonItems = [negativeSpace]
+        navigationItem.rightBarButtonItem = imageItem
     }
 }

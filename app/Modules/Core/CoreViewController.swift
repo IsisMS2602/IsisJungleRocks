@@ -10,7 +10,7 @@ import UIKit
 import SVProgressHUD
 
 enum ListOption {
-    case expandableCell(title: String, key: String, imgUrl: String, worklogs: [WorkLog])
+    case expandableCell(title: String, key: String, imgUrl: String, worklogs: [WorkLog], isExpanded: Bool)
     case plainCell(worklogs: WorkLog)
 }
 
@@ -127,20 +127,31 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
             }
             guard let key = key,
                 let safeProject = project else { return nil }
-            return ListOption.expandableCell(title: safeProject.name, key: key, imgUrl: safeProject.image, worklogs: elements)
-        }
+            return ListOption.expandableCell(title: safeProject.name, key: key, imgUrl: safeProject.image, worklogs: elements, isExpanded: selectedKey == key)
+        }.sorted(by: {(element1, element2) in
+            switch element1 {
+            case .expandableCell( _, let key1, _, _, _):
+                switch element2 {
+                case .expandableCell( _, let key2, _, _, _):
+                    return key1 < key2
+                default:
+                    return false
+                }
+            default:
+                return false
+            }
+        })
         return Section(
             title: "Projects",
             elements: elements)
     }
-    
     func getOtherActivitiesSection() -> Section {
         let filteredArray = self.worklogArray.filter { worklog in
             worklog.category != "Development"
         }
         let categoryMap = Dictionary(grouping: filteredArray, by: { $0.category })
         let elements = categoryMap.map { (key, elements) in
-            ListOption.expandableCell(title: key, key: key, imgUrl: "", worklogs: elements)
+            ListOption.expandableCell(title: key, key: key, imgUrl: "", worklogs: elements, isExpanded: false)
         }
         return Section(
             title: "Other activities",
@@ -164,6 +175,9 @@ extension CoreViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return dataSource.count
     }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 32
+    }
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         view.tintColor = UIColor.clear
     }
@@ -176,15 +190,9 @@ extension CoreViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let element = dataSource[indexPath.section].elements[indexPath.row]
         switch element {
-        case .expandableCell(let title, let key, let imgUrl, let worklogs):
+        case .expandableCell(let title, _, let imgUrl, let worklogs, let isExpanded):
             let cell = tableView.dequeueReusableCell(for: indexPath) as ProjectsTableViewCell
-            cell.bind(image: imgUrl, text: title, time: "\(worklogs[0].timeSpent/3600) h", tasks: "\(worklogs.count) tasks", worklogs: worklogs)
-            if key == selectedKey ?? " " {
-                cell.tableViewHeight.constant = CGFloat((60 * worklogs.count)+10)
-            }
-            if key != selectedKey ?? " " {
-                cell.tableViewHeight.constant = 0
-            }
+            cell.bind(image: imgUrl, text: title, time: "\(worklogs[0].timeSpent/3600) h", tasks: "\(worklogs.count) tasks", worklogs: worklogs, isExpanded: isExpanded)
             return cell
         case .plainCell(let worklog):
             let cell = tableView.dequeueReusableCell(for: indexPath) as PlainTableViewCell
@@ -197,9 +205,9 @@ extension CoreViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let element = dataSource[indexPath.section].elements[indexPath.row]
         switch element {
-        case .expandableCell( _, let key, _, _):
-            selectedKey = key
-            tableView.reloadData()
+        case .expandableCell( _, let key, _, _, _):
+            if key == selectedKey { selectedKey = nil } else { selectedKey = key }
+            dataSource = getSections()
         default:
             break
         }

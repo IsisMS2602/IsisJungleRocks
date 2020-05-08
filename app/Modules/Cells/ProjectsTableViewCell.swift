@@ -23,7 +23,7 @@ class ProjectsTableViewCell: UITableViewCell, NibLoadable {
         super.prepareForReuse()
     }
     // MARK: Variables
-    var dataSource: [WorkLog] = [] { didSet {} }
+    var dataSource: [WorkLog] = [] { didSet {tasksTableView.reloadData()} }
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
     @IBOutlet weak var colorView: UIView!
     @IBOutlet weak var projectImage: UIImageView!
@@ -54,7 +54,7 @@ class ProjectsTableViewCell: UITableViewCell, NibLoadable {
         headerProjectView.layer.cornerRadius = 4
         colorView.layer.cornerRadius = 2
     }
-    func bind(image: String, text: String, time: String, tasks: String, worklogs: [WorkLog]) {
+    func bind(image: String, text: String, time: String, tasks: String, worklogs: [WorkLog], isExpanded: Bool) {
         projectLabel.text = text
         loggedHouersLabel.text = time
         tasksLabel.text = tasks
@@ -66,11 +66,16 @@ class ProjectsTableViewCell: UITableViewCell, NibLoadable {
         self.projectImage.image = UIImage(data: imageData)
         projectImage.makeRounded()
         self.dataSource = worklogs
+        if isExpanded {
+            tableViewHeight.constant = CGFloat((60 * worklogs.count)+10)
+        }
+        if !isExpanded {
+            tableViewHeight.constant = 0
+        }
     }
     func setCellHeight() {
     }
 }
-
 extension ProjectsTableViewCell: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataSource.count
