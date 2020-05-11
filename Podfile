@@ -14,6 +14,7 @@ target 'IsisJungleRocks' do
   pod 'RxSwift', '~> 5.1.0'
   pod 'SwiftLint', '~> 0.31.0'
   pod 'SVProgressHUD'
+  pod 'Kingfisher'
   pod 'AlamofireNetworkActivityLogger', '~> 2.4', :configurations => ['staging debug', 'production debug']
 end
 

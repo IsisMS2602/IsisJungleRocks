@@ -37,7 +37,7 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
     var selectedKey: String?
     typealias Section = (title: String, elements: [ListOption])
     var circularView = CircularProgressView()
-    var userImage: String = ""
+    var userImage: String = SessionHelper.init().currentUser?.picture ?? "logo"
     var worklogArray: [WorkLog] = [] {didSet {coreTableView.reloadData()}}
     var projectArray: [Project] = [] {didSet {coreTableView.reloadData()}}
     var dataSource: [Section] = [] { didSet {coreTableView.reloadData()}}
