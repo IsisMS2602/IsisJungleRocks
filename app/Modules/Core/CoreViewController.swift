@@ -37,12 +37,13 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
     var selectedKey: String?
     typealias Section = (title: String, elements: [ListOption])
     var circularView = CircularProgressView()
-    var userImage: String = SessionHelper.init().currentUser?.picture ?? "logo"
+    var userImage: String = SessionHelper.shared.currentUser?.picture ?? "logo"
     var worklogArray: [WorkLog] = [] {didSet {coreTableView.reloadData()}}
     var projectArray: [Project] = [] {didSet {coreTableView.reloadData()}}
     var dataSource: [Section] = [] { didSet {coreTableView.reloadData()}}
     // MARK: Life cycle
     override func viewDidLoad() {
+        self.title = "Time Tracking"
         circularView.center.x = (viewForCircularView.center.x + 16)/2
         circularView.center.y = (viewForCircularView.center.y - 8)/2
         viewForCircularView.addSubview(circularView)

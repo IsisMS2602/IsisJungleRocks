@@ -41,7 +41,6 @@ class BaseViewController: UIViewController {
     }
     func setNavigationBar(image: String) {
         navigationController?.isNavigationBarHidden = false
-        self.title = "Time Trakking"
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         imageView.loadImage(fromUrl: image, withParams: LoadImageParams(backgroundColor: .clear, placeholder: .none, placeholderContentMode: .scaleAspectFit, contentMode: .scaleAspectFit, showActivityIndicator: false, activityIndicatorColor: .black, cornerRadius: (imageView.frame.width * 100)/2, forceRefresh: true, resizeBeforeCaching: false), completion: nil)
         let imageItem = UIBarButtonItem(customView: imageView)
