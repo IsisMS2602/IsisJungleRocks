@@ -417,6 +417,7 @@
 			buildPhases = (
 				927C1D0F7C96CCC7B2F02C27 /* [CP] Check Pods Manifest.lock */,
 				64A72B2D0939F02E9AC7858D /* Sources */,
+				63FBEEAE24801DE900B583EE /* SwiftLint autocorrect */,
 				F94704735AD4DD284FA225A7 /* SwiftLint */,
 				6CA86FA1E9F59198ACA185CC /* Resources */,
 				66B31AB32AEDD138A5CC69E5 /* Frameworks */,
@@ -493,6 +494,24 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-IsisJungleRocks/Pods-IsisJungleRocks-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		63FBEEAE24801DE900B583EE /* SwiftLint autocorrect */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "SwiftLint autocorrect";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n${PODS_ROOT}/SwiftLint/swiftlint autocorrect\n";
 		};
 		927C1D0F7C96CCC7B2F02C27 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

@@ -57,6 +57,9 @@
                                         <state key="normal" title=" Last Week ">
                                             <color key="titleColor" red="0.34509803919999998" green="0.3803921569" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="lastWeekButton:" destination="gQl-Mh-u7R" eventType="touchUpInside" id="Ip2-Ja-LjH"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LHq-nF-tvU">
                                         <rect key="frame" x="227" y="0.0" width="100" height="40"/>
@@ -68,6 +71,9 @@
                                         <state key="normal" title=" This Month ">
                                             <color key="titleColor" red="0.34509803919999998" green="0.3803921569" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="thisMonthButton:" destination="gQl-Mh-u7R" eventType="touchUpInside" id="vT6-3B-9eM"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -115,6 +121,7 @@
                         <outlet property="lastWeekButtonUI" destination="nkl-Qv-Q3e" id="fvD-9y-o0Z"/>
                         <outlet property="thisMonthButtonUI" destination="LHq-nF-tvU" id="tdF-kX-xki"/>
                         <outlet property="thisWeekButtonUI" destination="HiY-tF-88v" id="hgk-1a-NeI"/>
+                        <outlet property="totalHoursWorked" destination="VAV-xN-q8F" id="uPH-5U-ZUb"/>
                         <outlet property="viewForCircularView" destination="m9k-zI-mcb" id="chJ-QF-Fa7"/>
                     </connections>
                 </viewController>
