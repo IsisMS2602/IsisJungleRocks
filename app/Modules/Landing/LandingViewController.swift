@@ -87,10 +87,9 @@ class LandingViewController: BaseViewController, StoryboardLoadable {
             case .success(let userResponse) :
                     print("sucesso")
                     SessionHelper.shared.createSession(user: userResponse.user, token: userResponse.key)
-                    self.navigationController?.pushViewController(CoreViewController.initModule(), animated: true)
-                    SVProgressHUD.dismiss()
                     let viewController = CoreViewController.initModule()
-                    viewController.userImage = userResponse.user.picture ?? " "
+                    self.navigationController?.pushViewController(viewController, animated: true)
+                    SVProgressHUD.dismiss()
             case .failure:
                 let alert = UIAlertController(title: "Unable to log in", message: "Check your conection status", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Dismiss", style: .destructive))

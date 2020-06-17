@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Kingfisher
+import SVProgressHUD
 
 //@available(iOS 13.0, *)
 class BaseViewController: UIViewController {
@@ -40,13 +42,14 @@ class BaseViewController: UIViewController {
     }
     func setNavigationBar(image: String) {
         navigationController?.isNavigationBarHidden = false
-        self.title = "Time Trakking"
-        let userImage = UIImage(named: "logo")
-        let userImageView = UIImageView(image: userImage)
-        userImageView.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-        userImageView.layer.cornerRadius = userImageView.frame.size.width/2
-        userImageView.contentMode = .scaleAspectFit
-        let imageItem = UIBarButtonItem(customView: userImageView)
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        imageView.loadImage(fromUrl: image, withParams: LoadImageParams(backgroundColor: .clear, placeholder: .none, placeholderContentMode: .scaleAspectFit, contentMode: .scaleAspectFit, showActivityIndicator: false, activityIndicatorColor: .black, cornerRadius: (imageView.frame.width * 100)/2, forceRefresh: true, resizeBeforeCaching: false), completion: nil)
+        let imageItem = UIBarButtonItem(customView: imageView)
         navigationItem.rightBarButtonItem = imageItem
+    }
+    func showLoading() {
+        SVProgressHUD.setDefaultAnimationType(.flat)
+        SVProgressHUD.setDefaultMaskType(.gradient)
+        SVProgressHUD.show()
     }
 }

@@ -54,7 +54,8 @@ class ProjectsTableViewCell: UITableViewCell, NibLoadable {
         headerProjectView.layer.cornerRadius = 4
         colorView.layer.cornerRadius = 2
     }
-    func bind(image: String, text: String, time: String, tasks: String, worklogs: [WorkLog], isExpanded: Bool) {
+    func bind(image: String, text: String, time: String, tasks: String, worklogs: [WorkLog], isExpanded: Bool, color: UIColor) {
+        colorView.backgroundColor = color
         projectLabel.text = text
         loggedHouersLabel.text = time
         tasksLabel.text = tasks

@@ -34,7 +34,7 @@ struct WorkLog: Codable {
     let category: String
     let workedAt: String?
     let timeSpent: Int
-    let createdAt: String?
+    let createdAt: Date
     let author: Author?
     let issue: Issue?
 }
