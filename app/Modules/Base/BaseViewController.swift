@@ -8,6 +8,7 @@
 
 import UIKit
 import Kingfisher
+import SVProgressHUD
 
 //@available(iOS 13.0, *)
 class BaseViewController: UIViewController {
@@ -45,5 +46,10 @@ class BaseViewController: UIViewController {
         imageView.loadImage(fromUrl: image, withParams: LoadImageParams(backgroundColor: .clear, placeholder: .none, placeholderContentMode: .scaleAspectFit, contentMode: .scaleAspectFit, showActivityIndicator: false, activityIndicatorColor: .black, cornerRadius: (imageView.frame.width * 100)/2, forceRefresh: true, resizeBeforeCaching: false), completion: nil)
         let imageItem = UIBarButtonItem(customView: imageView)
         navigationItem.rightBarButtonItem = imageItem
+    }
+    func showLoading() {
+        SVProgressHUD.setDefaultAnimationType(.flat)
+        SVProgressHUD.setDefaultMaskType(.gradient)
+        SVProgressHUD.show()
     }
 }

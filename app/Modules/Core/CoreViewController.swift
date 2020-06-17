@@ -59,14 +59,13 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
         circularView.center.y = (viewForCircularView.center.y - 8)/2
         viewForCircularView.addSubview(circularView)
         super.viewDidLoad()
-        SVProgressHUD.setDefaultAnimationType(.flat)
-        SVProgressHUD.setDefaultMaskType(.gradient)
-        SVProgressHUD.show()
+        showLoading()
         setButtonsUI()
         setToolBar()
         setupTableView()
         setNavigationBar(image: userImage)
         getUserTimeTrakking()
+      
     }
 
     override func viewWillAppear(_ animated: Bool) {

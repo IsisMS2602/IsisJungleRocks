@@ -32,6 +32,7 @@
                                             <constraint firstAttribute="height" constant="40" id="WeB-af-EZ6"/>
                                             <constraint firstAttribute="width" constant="100" id="yO2-YK-u2q"/>
                                         </constraints>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal">
                                             <attributedString key="attributedTitle">
                                                 <fragment content="This Week">
@@ -54,6 +55,7 @@
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="FzY-TE-O7l"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="14"/>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title=" Last Week ">
                                             <color key="titleColor" red="0.34509803919999998" green="0.3803921569" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
@@ -68,8 +70,9 @@
                                             <constraint firstAttribute="width" constant="100" id="8Ar-E9-8b8"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="14"/>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title=" This Month ">
-                                            <color key="titleColor" red="0.34509803919999998" green="0.3803921569" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
                                             <action selector="thisMonthButton:" destination="gQl-Mh-u7R" eventType="touchUpInside" id="vT6-3B-9eM"/>
