@@ -33,12 +33,15 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
     }
     @IBAction func thisWeekButton(_ sender: Any) {
         selectedDate = Calendar.current.date(byAdding: .day, value: -7, to: Date())
+        setSelectedButton(buttonSelected: thisWeekButtonUI, button2: lastWeekButtonUI, button3: thisMonthButtonUI)
     }
     @IBAction func lastWeekButton(_ sender: Any) {
         selectedDate = Calendar.current.date(byAdding: .weekOfMonth, value: -1, to: Date())
+        setSelectedButton(buttonSelected: lastWeekButtonUI, button2: thisMonthButtonUI, button3: thisWeekButtonUI)
     }
     @IBAction func thisMonthButton(_ sender: Any) {
         selectedDate = Calendar.current.date(byAdding: .month, value: -1, to: Date())
+        setSelectedButton(buttonSelected: thisMonthButtonUI, button2: thisWeekButtonUI, button3: lastWeekButtonUI)
     }
     // MARK: Variables
     var colorArray: [UIColor] = [.systemYellow, .systemPink, .systemBlue, .systemOrange, .systemGreen, .magenta, .systemYellow, .systemPink, .systemBlue, .systemOrange, .systemGreen, .magenta]
@@ -60,12 +63,12 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
         viewForCircularView.addSubview(circularView)
         super.viewDidLoad()
         showLoading()
-        setButtonsUI()
+        setInicialButtonsUI()
         setToolBar()
         setupTableView()
         setNavigationBar(image: userImage)
         getUserTimeTrakking()
-      
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -85,13 +88,25 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
         coreTableView.separatorColor = .clear
     }
 
-    func setButtonsUI() {
+    func setInicialButtonsUI() {
         thisWeekButtonUI.layer.cornerRadius = 20
         thisWeekButtonUI.backgroundColor = UIColor(red: 88/255, green: 97/255, blue: 121/255, alpha: 1)
+        thisWeekButtonUI.titleLabel?.textColor = .white
         lastWeekButtonUI.layer.cornerRadius = 20
         lastWeekButtonUI.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 250/255, alpha: 1)
+        lastWeekButtonUI.titleLabel?.textColor = .darkGray
         thisMonthButtonUI.layer.cornerRadius = 20
         thisMonthButtonUI.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 250/255, alpha: 1)
+        thisMonthButtonUI.titleLabel?.textColor = .darkGray
+    }
+
+    func setSelectedButton(buttonSelected: UIButton, button2: UIButton, button3: UIButton) {
+        buttonSelected.backgroundColor = UIColor(red: 88/255, green: 97/255, blue: 121/255, alpha: 1)
+        buttonSelected.titleLabel?.textColor = .white
+        button2.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 250/255, alpha: 1)
+        button2.titleLabel?.textColor = .darkGray
+        button3.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 250/255, alpha: 1)
+        button3.titleLabel?.textColor = .darkGray
     }
 
     func getUserTimeTrakking() {
