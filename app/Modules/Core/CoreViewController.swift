@@ -314,7 +314,8 @@ extension CoreViewController: UITableViewDataSource {
         let element = dataSource[indexPath.section].elements[indexPath.row]
         switch element {
         // TODO use key value to get color from color map
-        case .expandableCell(let title, _, let imgUrl, let worklogs, let isExpanded):
+        case .expandableCell(let title, let key, let imgUrl, let worklogs, let isExpanded):
+            let color: UIColor = projectColorsMap[key] ?? .red // TODO PASS COLOR INTO CELL
             let cell = tableView.dequeueReusableCell(for: indexPath) as ProjectsTableViewCell
             cell.bind(image: imgUrl, text: title, time: "\(worklogs[0].timeSpent/3600) h", tasks: "\(worklogs.count) tasks", worklogs: worklogs, isExpanded: isExpanded, color: colorArray[indexPath.row])
             return cell
