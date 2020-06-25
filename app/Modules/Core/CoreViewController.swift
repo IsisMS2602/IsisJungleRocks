@@ -15,12 +15,16 @@ enum ListOption {
 }
 
 class CoreViewController: BaseViewController, StoryboardLoadable {
+
     // MARK: Static
+
     static func initModule() -> CoreViewController {
         let viewController = loadFromStoryboard()
         return viewController
     }
+
     // MARK: Outlets
+
     @IBOutlet weak var totalHoursWorked: UILabel!
     @IBOutlet weak var thisWeekButtonUI: UIButton!
     @IBOutlet weak var lastWeekButtonUI: UIButton!
@@ -43,8 +47,23 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
         selectedDate = Calendar.current.date(byAdding: .month, value: -1, to: Date())
         setSelectedButton(buttonSelected: thisMonthButtonUI, button2: thisWeekButtonUI, button3: lastWeekButtonUI)
     }
+
     // MARK: Variables
-    var colorArray: [UIColor] = [.systemYellow, .systemPink, .systemBlue, .systemOrange, .systemGreen, .magenta, .systemYellow, .systemPink, .systemBlue, .systemOrange, .systemGreen, .magenta]
+
+    var colorArray: [UIColor] = [
+        .systemYellow,
+        .systemPink,
+        .systemBlue,
+        .systemOrange,
+        .systemGreen,
+        .magenta,
+        .systemYellow,
+        .systemPink,
+        .systemBlue,
+        .systemOrange,
+        .systemGreen,
+        .magenta
+    ]
     var selectedKey: String?
     typealias Section = (title: String, elements: [ListOption])
     var circularView = CircularProgressView()
@@ -52,10 +71,11 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
     var worklogArray: [WorkLog] = []
     var projectArray: [Project] = []
     var dataSource: [Section] = [] { didSet {coreTableView.reloadData()}}
-    var selectedDate: Date? {didSet {dataSource = getSections()}}
+    var selectedDate: Date? { didSet {dataSource = getSections()}}
     // TODO create color map variable
 
     // MARK: Life cycle
+
     override func viewDidLoad() {
         self.title = "Time Tracking"
         circularView.center.x = (viewForCircularView.center.x + 16)/2
@@ -68,13 +88,14 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
         setupTableView()
         setNavigationBar(image: userImage)
         getUserTimeTrakking()
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super .viewWillAppear(false)
         setNavigationBar(image: userImage)
     }
+
+    // MARK: Private
 
     private func setupTableView() {
         coreTableView.dataSource = self
@@ -88,7 +109,7 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
         coreTableView.separatorColor = .clear
     }
 
-    func setInicialButtonsUI() {
+    private func setInicialButtonsUI() {
         thisWeekButtonUI.layer.cornerRadius = 20
         thisWeekButtonUI.backgroundColor = UIColor(red: 88/255, green: 97/255, blue: 121/255, alpha: 1)
         thisWeekButtonUI.titleLabel?.textColor = .white
@@ -100,7 +121,7 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
         thisMonthButtonUI.titleLabel?.textColor = .darkGray
     }
 
-    func setSelectedButton(buttonSelected: UIButton, button2: UIButton, button3: UIButton) {
+    private func setSelectedButton(buttonSelected: UIButton, button2: UIButton, button3: UIButton) {
         buttonSelected.backgroundColor = UIColor(red: 88/255, green: 97/255, blue: 121/255, alpha: 1)
         buttonSelected.titleLabel?.textColor = .white
         button2.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 250/255, alpha: 1)
@@ -108,6 +129,129 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
         button3.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 250/255, alpha: 1)
         button3.titleLabel?.textColor = .darkGray
     }
+
+    private func getSections() -> [Section] {
+        return [
+            getProjectsSection(startFrom: selectedDate),
+            getOtherActivitiesSection(startFrom: selectedDate),
+            getLastTimeLogsSection(startFrom: selectedDate)
+        ]
+    }
+
+    private func getProjectsSection(startFrom date: Date? = nil) -> Section {
+        circularView.calculateCircle(layerBaseInfoArray: getProjectsTime())
+        let filteredArray = self.worklogArray
+            .filter { worklog in
+                worklog.category == "Development"
+        }
+        .filter { worklog in
+            guard let selectedDate = self.selectedDate else { return true }
+            return worklog.createdAt >= selectedDate
+        }
+        let categoryMap = Dictionary(grouping: filteredArray, by: { $0.issue?.projectKey })
+        let elements = categoryMap.compactMap { (key, elements) -> ListOption? in
+            let project = projectArray.first { element in
+                element.key == key
+            }
+            guard let key = key,
+                let safeProject = project else { return nil }
+            return ListOption.expandableCell(
+                title: safeProject.name,
+                key: key,
+                imgUrl: safeProject.image,
+                worklogs: elements,
+                isExpanded: selectedKey == key
+            )
+        }.sorted(by: {(element1, element2) in
+            switch element1 {
+            case .expandableCell( _, let key1, _, _, _):
+                switch element2 {
+                case .expandableCell( _, let key2, _, _, _):
+                    return key1 < key2
+                default:
+                    return false
+                }
+            default:
+                return false
+            }
+        })
+        return Section(
+            title: "Projects",
+            elements: elements)
+    }
+
+    private func getOtherActivitiesSection(startFrom date: Date? = nil) -> Section {
+        let filteredArray = self.worklogArray.filter { worklog in
+            worklog.category != "Development"
+        }.filter { worklog in
+            guard let selectedDate = self.selectedDate else { return true }
+            return worklog.createdAt >= selectedDate
+        }
+        let categoryMap = Dictionary(grouping: filteredArray, by: { $0.category })
+        let elements = categoryMap.map { (key, elements) in
+            ListOption.expandableCell(title: key, key: key, imgUrl: "", worklogs: elements, isExpanded: false)
+        }
+        return Section(
+            title: "Other activities",
+            elements: elements)
+    }
+
+    private func getLastTimeLogsSection(startFrom date: Date? = nil) -> Section {
+        let today = Date()
+        let day = Calendar.current.component(.day, from: today)
+        let filteredArrayByCreatedAt = worklogArray.filter { Calendar.current.component(.day, from: $0.createdAt) == day }
+        let timeMap = Dictionary(grouping: filteredArrayByCreatedAt, by: { $0.issue?.key })
+        let elements = timeMap.map { ( _, elements) in
+            ListOption.plainCell(worklogs: elements[0])
+        }
+        return Section(
+            title: "Last time logs",
+            elements: elements)
+    }
+
+    private func getProjectsTime() -> [(UIColor, Int)] {
+        let filteredArray = self.worklogArray.filter { worklog in
+            worklog.category == "Development"
+        }
+        let categoryMap = Dictionary(grouping: filteredArray, by: { $0.issue?.projectKey })
+        let elements = categoryMap.map { (_, elements) -> (UIColor, Int) in
+            let timeResult = elements.reduce(0) { (acc, element) -> Int in
+                return acc + element.timeSpent
+            }
+            let colors = colorArray.remove(at: 0)
+            colorArray.append(colors)
+            totalHoursWorked.text = "\(timeResult/3600) h"
+            return (colors, timeResult)
+        }
+        return elements
+    }
+
+    private func filterByMonth() -> [WorkLog] {
+        let today = Date()
+        let thisMonth = Calendar.current.component(.month, from: today)
+        let filteredArrayByCreatedAt = worklogArray.filter { Calendar.current.component(.month, from: $0.createdAt) == thisMonth }
+        return (filteredArrayByCreatedAt)
+    }
+
+    private func filterByLastWeek() -> [WorkLog] {
+        let today = Date()
+        let thisMonth = Calendar.current.component(.month, from: today)
+        let filteredArrayByCreatedAt = worklogArray.filter { Calendar.current.component(.month, from: $0.createdAt) == thisMonth }
+        let thisWeek = Calendar.current.component(.weekOfMonth, from: today)
+        let filteredArrayByThisWeek = filteredArrayByCreatedAt.filter { Calendar.current.component(.weekOfMonth, from: $0.createdAt) == thisWeek - 1 }
+        return (filteredArrayByThisWeek)
+    }
+
+    private func filterByThisWeek() -> [WorkLog] {
+        let today = Date()
+        let thisMonth = Calendar.current.component(.month, from: today)
+        let filteredArrayByCreatedAt = worklogArray.filter { Calendar.current.component(.month, from: $0.createdAt) == thisMonth }
+        let thisWeek = Calendar.current.component(.weekOfMonth, from: today)
+        let filteredArrayByThisWeek = filteredArrayByCreatedAt.filter { Calendar.current.component(.weekOfMonth, from: $0.createdAt) == thisWeek - 1 }
+        return filteredArrayByThisWeek
+    }
+
+    // MARK: API
 
     func getUserTimeTrakking() {
         APIManager.GetWorkLogs().request { response in
@@ -144,120 +288,8 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
             }
         }
     }
-
-    func getSections() -> [Section] {
-        return [
-            getProjectsSection(startFrom: selectedDate),
-            getOtherActivitiesSection(startFrom: selectedDate),
-            getLastTimeLogsSection(startFrom: selectedDate)
-        ]
-    }
-
-    func getProjectsSection(startFrom date: Date? = nil) -> Section {
-        circularView.calculateCircle(layerBaseInfoArray: getProjectsTime())
-        let filteredArray = self.worklogArray
-            .filter { worklog in
-                worklog.category == "Development"
-        }
-        .filter { worklog in
-            guard let selectedDate = self.selectedDate else { return true }
-            return worklog.createdAt >= selectedDate
-        }
-        let categoryMap = Dictionary(grouping: filteredArray, by: { $0.issue?.projectKey })
-        let elements = categoryMap.compactMap { (key, elements) -> ListOption? in
-            let project = projectArray.first { element in
-                element.key == key
-            }
-            guard let key = key,
-                let safeProject = project else { return nil }
-            return ListOption.expandableCell(title: safeProject.name, key: key, imgUrl: safeProject.image, worklogs: elements, isExpanded: selectedKey == key)
-        }.sorted(by: {(element1, element2) in
-            switch element1 {
-            case .expandableCell( _, let key1, _, _, _):
-                switch element2 {
-                case .expandableCell( _, let key2, _, _, _):
-                    return key1 < key2
-                default:
-                    return false
-                }
-            default:
-                return false
-            }
-        })
-        return Section(
-            title: "Projects",
-            elements: elements)
-    }
-
-    func getOtherActivitiesSection(startFrom date: Date? = nil) -> Section {
-        let filteredArray = self.worklogArray.filter { worklog in
-            worklog.category != "Development"
-        }.filter { worklog in
-            guard let selectedDate = self.selectedDate else { return true }
-            return worklog.createdAt >= selectedDate
-        }
-        let categoryMap = Dictionary(grouping: filteredArray, by: { $0.category })
-        let elements = categoryMap.map { (key, elements) in
-            ListOption.expandableCell(title: key, key: key, imgUrl: "", worklogs: elements, isExpanded: false)
-        }
-        return Section(
-            title: "Other activities",
-            elements: elements)
-    }
-
-    func getLastTimeLogsSection(startFrom date: Date? = nil) -> Section {
-        let today = Date()
-        let day = Calendar.current.component(.day, from: today)
-        let filteredArrayByCreatedAt = worklogArray.filter { Calendar.current.component(.day, from: $0.createdAt) == day }
-        let timeMap = Dictionary(grouping: filteredArrayByCreatedAt, by: { $0.issue?.key })
-        let elements = timeMap.map { ( _, elements) in
-            ListOption.plainCell(worklogs: elements[0])
-        }
-        return Section(
-            title: "Last time logs",
-            elements: elements)
-    }
-
-    func getProjectsTime() -> [(UIColor, Int)] {
-        let filteredArray = self.worklogArray.filter { worklog in
-            worklog.category == "Development"
-        }
-        let categoryMap = Dictionary(grouping: filteredArray, by: { $0.issue?.projectKey })
-        let elements = categoryMap.map { (_, elements) -> (UIColor, Int) in
-            let timeResult = elements.reduce(0) { (acc, element) -> Int in
-                return acc + element.timeSpent
-            }
-            let colors = colorArray.remove(at: 0)
-            colorArray.append(colors)
-            totalHoursWorked.text = "\(timeResult/3600) h"
-            return (colors, timeResult)
-        }
-        return elements
-    }
-
-    func filterByMonth() -> [WorkLog] {
-        let today = Date()
-        let thisMonth = Calendar.current.component(.month, from: today)
-        let filteredArrayByCreatedAt = worklogArray.filter { Calendar.current.component(.month, from: $0.createdAt) == thisMonth }
-        return (filteredArrayByCreatedAt)
-    }
-    func filterByLastWeek() -> [WorkLog] {
-        let today = Date()
-        let thisMonth = Calendar.current.component(.month, from: today)
-        let filteredArrayByCreatedAt = worklogArray.filter { Calendar.current.component(.month, from: $0.createdAt) == thisMonth }
-        let thisWeek = Calendar.current.component(.weekOfMonth, from: today)
-        let filteredArrayByThisWeek = filteredArrayByCreatedAt.filter { Calendar.current.component(.weekOfMonth, from: $0.createdAt) == thisWeek - 1 }
-        return (filteredArrayByThisWeek)
-    }
-    func filterByThisWeek() -> [WorkLog] {
-        let today = Date()
-        let thisMonth = Calendar.current.component(.month, from: today)
-        let filteredArrayByCreatedAt = worklogArray.filter { Calendar.current.component(.month, from: $0.createdAt) == thisMonth }
-        let thisWeek = Calendar.current.component(.weekOfMonth, from: today)
-        let filteredArrayByThisWeek = filteredArrayByCreatedAt.filter { Calendar.current.component(.weekOfMonth, from: $0.createdAt) == thisWeek - 1 }
-        return filteredArrayByThisWeek
-    }
 }
+
 extension CoreViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return dataSource.count
@@ -277,7 +309,7 @@ extension CoreViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let element = dataSource[indexPath.section].elements[indexPath.row]
         switch element {
-            // TODO use key value to get color from color map
+        // TODO use key value to get color from color map
         case .expandableCell(let title, _, let imgUrl, let worklogs, let isExpanded):
             let cell = tableView.dequeueReusableCell(for: indexPath) as ProjectsTableViewCell
             cell.bind(image: imgUrl, text: title, time: "\(worklogs[0].timeSpent/3600) h", tasks: "\(worklogs.count) tasks", worklogs: worklogs, isExpanded: isExpanded, color: colorArray[indexPath.row])
