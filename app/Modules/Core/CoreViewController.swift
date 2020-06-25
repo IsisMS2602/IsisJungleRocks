@@ -69,9 +69,13 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
     var circularView = CircularProgressView()
     var userImage: String = SessionHelper.shared.currentUser?.picture ?? "logo"
     var worklogArray: [WorkLog] = []
-    var projectArray: [Project] = []
+    var projectArray: [Project] = [] { didSet {
+        //TODO redefine project colors (projectId: randomColor)
+    }}
+    var projectColorsMap: [String : UIColor] = [:]
     var dataSource: [Section] = [] { didSet {coreTableView.reloadData()}}
     var selectedDate: Date? { didSet {dataSource = getSections()}}
+
     // TODO create color map variable
 
     // MARK: Life cycle
