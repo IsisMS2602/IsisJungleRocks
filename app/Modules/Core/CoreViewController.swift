@@ -158,7 +158,7 @@ class CoreViewController: BaseViewController, StoryboardLoadable {
             return ListOption.expandableCell(
                 title: safeProject.name,
                 key: key,
-                imgUrl: safeProject.image,
+                imgUrl: safeProject.image ?? "",
                 worklogs: elements,
                 isExpanded: selectedKey == key
             )

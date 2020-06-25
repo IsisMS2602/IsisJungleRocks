@@ -10,7 +10,7 @@ import Foundation
 
 struct Project: Codable {
     let name: String
-    let image: String
+    let image: String?
     let key: String
 }
 
